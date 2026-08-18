@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import "./styles/App.css";
 import UserList from "./components/UserList";
-import Loader from "./components/Loader";
-import ErrorMessage from "./components/ErrorMessage";
+import Loader from "./shared/Loader";
+import ErrorMessage from "./shared/ErrorMessage";
 import useUsers from "./hooks/useUsers";
 import SearchBar from "./components/SearchBar";
 
