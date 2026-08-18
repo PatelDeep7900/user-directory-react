@@ -1,18 +1,75 @@
-# React + Vite
+# Mini User Directory
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A small React + Vite app that fetches a list of users from a public API and
+lets you search through them by name.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Fetches user data from [JSONPlaceholder](https://jsonplaceholder.typicode.com/users)
+- Live search/filter by name
+- Loading state while data is being fetched
+- Error state if the request fails
+- Responsive grid layout (3 columns → 2 → 1 as the screen narrows)
 
-## React Compiler
+## Tech stack
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+- [React](https://react.dev/) 18+
+- [Vite](https://vitejs.dev/) — dev server & build tool
+- Plain CSS (no framework)
 
-Note: This will impact Vite dev & build performances.
+## Project structure
 
-## Expanding the ESLint configuration
+```
+src/
+├── api/
+│   └── userApi.js        # API calls (fetch users)
+├── hooks/
+│   └── useUsers.js        # Custom hook: loading/error/data state
+├── components/
+│   ├── SearchBar.jsx       # Search input
+│   ├── UserList.jsx        # Renders the grid of users
+│   ├── UserCard.jsx        # A single user's info
+│   ├── Loader.jsx          # Spinner shown while fetching
+│   └── ErrorMessage.jsx    # Error display
+├── styles/
+│   ├── App.css
+│   └── index.css
+├── assets/                 # Images/icons
+├── App.jsx                 # Top-level layout, wires everything together
+└── main.jsx                 # React entry point
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Getting started
+
+```bash
+# install dependencies
+npm install
+
+# start the dev server
+npm run dev
+
+# build for production
+npm run build
+
+# preview the production build locally
+npm run preview
+```
+
+The dev server runs at `http://localhost:5173` by default.
+
+## How it works
+
+1. `useUsers()` (in `hooks/useUsers.js`) fetches the user list once on mount
+   via `api/userApi.js`, and exposes `{ users, loading, error }`.
+2. `App.jsx` reads that state and also tracks the current search text.
+3. `filteredUsers` is derived from `users` + `search` with `useMemo`.
+4. Depending on state, `App.jsx` renders a `Loader`, an `ErrorMessage`, or
+   the `UserList` (which renders one `UserCard` per user).
+
+## Possible next steps
+
+- Add `PropTypes` or migrate to TypeScript for prop-shape safety.
+- Move `BASE_URL` into an `.env` file via `import.meta.env`.
+- Add pagination or infinite scroll for larger user lists.
+- Add tests (e.g. Vitest + React Testing Library) for `useUsers` and
+  `UserList`.
